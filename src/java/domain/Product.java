@@ -10,19 +10,20 @@ public class Product {
     private double price;
     private String category;
     private String description;
-    private String imgUrl;      // New field for image URL
+    private String imgUrl;  // Image URL field
 
     // No-arg constructor
     public Product() {}
 
     // All-args constructor
-    public Product(int productId, String productName, double price, String category, String description, String imgUrl) {
-        this.productId   = productId;
+    public Product(int productId, String productName, double price, String category, String description, 
+                   String imgUrl) {
+        this.productId = productId;
         this.productName = productName;
-        this.price       = price;
-        this.category    = category;
+        this.price = price;
+        this.category = category;
         this.description = description;
-        this.imgUrl      = imgUrl;
+        this.imgUrl = imgUrl;
     }
 
     // Getters & setters

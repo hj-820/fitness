@@ -3,281 +3,214 @@
     Created on : 22 Apr 2025, 10:37:36 am
     Author     : gary_
 --%>
-<%@ page import="java.sql.*" %>
+<%@ page import="java.sql.*, java.util.*" %>
+<%@ page import="domain.Product" %>
+<%@ page import="da.ProductDA" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  
   <title>Gym Product Page</title>
   <style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f4f4f8;
-  color: #333;
-}
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f8;
+      color: #333;
+    }
 
-html {
-  scroll-behavior: smooth;
-}
+    html {
+      scroll-behavior: smooth;
+    }
 
-header {
-  background-color: #000;
-  color: white;
-  padding: 20px 40px;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
+    header {
+      background-color: #000;
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
 
-.logo {
-  font-size: 28px;
-  font-weight: bold;
-  color: #FD35A0;
-  display: flex;
-  align-items: center;
-}
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #FD35A0;
+      display: flex;
+      align-items: center;
+    }
 
-.logo img {
-  height: 45px;
-  margin-right: 10px;
-}
+    .logo img {
+      height: 45px;
+      margin-right: 10px;
+    }
 
-nav {
-  background: linear-gradient(to right, #fd35a0, #ff6ec4);
-  padding: 12px 40px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
+    nav {
+      background: linear-gradient(to right, #fd35a0, #ff6ec4);
+      padding: 12px 40px;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
 
-nav a {
-  color: white;
-  text-decoration: none;
-  font-size: 16px;
-  transition: all 0.3s ease;
-}
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
 
-nav a:hover {
-  color: #ffd6ec;
-  text-shadow: 0 0 8px rgba(255,255,255,0.6);
-}
+    nav a:hover {
+      color: #ffd6ec;
+      text-shadow: 0 0 8px rgba(255,255,255,0.6);
+    }
 
-.container {
-  display: flex;
-  padding: 40px;
-  gap: 40px;
-}
+    .container {
+      display: flex;
+      padding: 40px;
+      gap: 40px;
+    }
 
-.sidebar {
-  width: 20%;
-  background-color: white;
-  padding: 25px;
-  border-radius: 16px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.05);
-  position: sticky;
-  top: 100px;
-  height: fit-content;
-}
+    .sidebar {
+      width: 20%;
+      background-color: white;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+    }
 
-.sidebar h3 {
-  font-size: 20px;
-  margin-bottom: 20px;
-  color: #FD35A0;
-  border-bottom: 2px solid #fd35a077;
-  padding-bottom: 8px;
-}
+    .sidebar h3 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #FD35A0;
+      border-bottom: 2px solid #fd35a077;
+      padding-bottom: 8px;
+    }
 
-.sidebar ul {
-  list-style-type: none;
-  padding-left: 0;
-}
+    .sidebar ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
 
-.sidebar li {
-  margin-bottom: 12px;
-}
+    .sidebar li {
+      margin-bottom: 12px;
+    }
 
-.sidebar a {
-  color: #333;
-  text-decoration: none;
-  font-size: 15px;
-  transition: color 0.3s ease;
-}
+    .sidebar a {
+      color: #333;
+      text-decoration: none;
+      font-size: 15px;
+      transition: color 0.3s ease;
+    }
 
-.sidebar a:hover {
-  color: #FD35A0;
-}
+    .sidebar a:hover {
+      color: #FD35A0;
+    }
 
-.products {
-  width: 80%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-}
+    .products {
+      width: 80%;
+    }
 
-.category-title {
-  grid-column: span 3;
-  font-size: 26px;
-  font-weight: bold;
-  color: #FD35A0;
-  margin-top: 60px;
-  border-bottom: 2px solid #FD35A0;
-  padding-bottom: 5px;
-}
+    /* Category section to start neatly */
+    .category-section {
+      margin-bottom: 80px;
+    }
 
-.product-card {
-  background-color: white;
-  padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+    /* New styling to align category title with products */
+    .category-header {
+      margin-bottom: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #FD35A0;
+      text-align: left;
+      border-bottom: 3px solid #FD35A0;
+      padding-bottom: 8px;
+    }
 
-.product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
+    /* New cleaner grid: aligned left, consistent gaps */
+    .product-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+    }
 
-.product-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: contain;
-  border-radius: 12px;
-}
+    /* Make all product cards same size for consistency */
+    .product-card {
+      background-color: white;
+      width: 250px; /* Fixed width for nice alignment */
+      padding: 18px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-.product-name {
-  font-size: 17px;
-  font-weight: 600;
-  margin: 12px 0 5px;
-}
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
 
-.price {
-  color: #009966;
-  font-size: 18px;
-  font-weight: bold;
-}
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
 
-.rating {
-  color: #fbc02d;
-  font-size: 15px;
-  margin: 5px 0;
-}
+    /* Product details centered nicely */
+    .product-details {
+      text-align: center;
+      margin-top: 10px;
+    }
 
-.comment-box {
-  margin-top: 12px;
-  display: flex;
-  gap: 5px;
-  align-items: center;
-}
+    .product-name {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 10px 0 6px;
+      display: block;
+      color: #333;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
 
-.comment-box input {
-  padding: 8px 12px;
-  width: 70%;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  outline: none;
-  transition: border-color 0.3s ease;
-}
+    .product-name:hover {
+      color: #FD35A0;
+    }
 
-.comment-box input:focus {
-  border-color: #FD35A0;
-}
+    .price {
+      color: #009966;
+      font-size: 17px;
+      font-weight: bold;
+    }
 
-.comment-box button {
-  padding: 8px 12px;
-  background-color: #FD35A0;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+    .cart-btn {
+      background-color: #FD35A0;
+      color: white;
+      padding: 8px 16px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+      margin-top: 12px;
+    }
 
-.comment-box button:hover {
-  background-color: #e22e91;
-}
+    .cart-btn:hover {
+      background-color: #e1288b;
+    }
+</style>
 
-
-
-
-.stars {
-  display: flex;
-  gap: 3px;
-  margin: 5px 0;
-}
-
-.star {
-  font-size: 18px;
-  color: #ccc;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.star.filled {
-  color: #fbc02d;
-}
-
-.comment-list {
-  list-style-type: disc;
-  padding-left: 20px;
-  margin-top: 10px;
-  font-size: 14px;
-  color: #555;
-}
-
-
-
-
-.quantity-control {
-  margin-top: 15px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.quantity-control button {
-  background-color: #fd35a0;
-  color: white;
-  border: none;
-  font-size: 20px;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.quantity-control button:hover {
-  background-color: #e02485;
-}
-
-.quantity {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-
-.cart-btn {
-  background-color: #FD35A0;
-  color: white;
-  padding: 8px 16px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.cart-btn:hover {
-  background-color: #e1288b;
-}
-
-  </style>
+      </style>
 </head>
 <body>
 
@@ -304,43 +237,50 @@ nav a:hover {
   </div>
 
   <div class="products">
-    <!-- Loop through the products dynamically -->
-    <c:forEach var="product" items="${products}">
-      <div class="product-card">
-        <div class="product-content">
-          <img src="${product.imagePath}" alt="${product.name}" class="product-image">
-          
-          <div class="product-details">
-            <div class="product-name">${product.name}</div>
-            <div class="price">MYR ${product.price}</div>
-
-            <!-- ⭐ Rating (optional: you can add logic for real rating) -->
-            <div class="rating">
-              <div class="stars">
-                <span class="star">&#9733;</span>
-                <span class="star">&#9733;</span>
-                <span class="star">&#9733;</span>
-                <span class="star">&#9733;</span>
-                <span class="star">&#9733;</span>
+    <!-- Loop through products and display by category -->
+    <%
+      ProductDA productDA = new ProductDA();
+      List<Product> products = productDA.getAllRecords();
+      
+      String currentCategory = ""; // To track the current category
+      for (Product product : products) {
+        String category = product.getCategory();
+        
+        // If the category changes, display a new category header
+        if (!category.equals(currentCategory)) {
+          currentCategory = category;
+    %>
+        <!-- Category Header -->
+        <div id="<%= category.toLowerCase() %>" class="category-section">
+          <div class="category-header"><%= category %></div>
+          <div class="product-grid">
+    <% 
+        } // End category check
+        
+    %>
+        <!-- Product Card with clickable product name -->
+        <form action="productDetail.jsp" method="get">
+            <input type="hidden" name="productId" value="<%= product.getProductId() %>">
+            <div class="product-card">
+              <img src="<%= product.getImgUrl() %>" alt="<%= product.getProductName() %>" class="product-image">
+              <div class="product-details">
+                <a href="productDetail.jsp?productId=<%= product.getProductId() %>" class="product-name"><%= product.getProductName() %></a>
+                <div class="price">MYR <%= product.getPrice() %></div>
+                <button type="submit" class="cart-btn">Add to Cart</button>
               </div>
-              <span>0.0 / 5</span>
             </div>
+          </form>
 
-            <!-- 🛒 Add to Cart Button -->
-            <div class="add-to-cart">
-              <button class="cart-btn">Add to Cart</button>
-            </div>
-          </div>
-        </div>
+    <% 
+      } // End product loop
 
-        <!-- 💬 Comment section -->
-        <div class="comment-box">
-          <input type="text" placeholder="Leave a comment..." />
-          <button>Post</button>
-        </div>
-        <ul class="comment-list"></ul>
-      </div>
-    </c:forEach>
+      // Close the last opened category section if any
+      if (!currentCategory.isEmpty()) {
+    %>
+      </div> <!-- End product-grid -->
+    </div> <!-- End category-section -->
+    <% } %>
+
   </div>
 </div>
 
