@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%@ include file="headerHome.jsp" %>
 <%
     if (session.getAttribute("id") == null) {
         response.sendRedirect("fitnessLogin.jsp");
@@ -7,6 +8,7 @@
 
     String fullName = (String) session.getAttribute("fullName");
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,11 +28,15 @@
             margin: 0;
             padding: 0;
             background: var(--light-color);
+            height: 100vh;
+            overflow: hidden; /* Optional: removes scrollbars if you want */
         }
+
+
         .dashboard-container {
             display: grid;
             grid-template-columns: 250px 1fr;
-            min-height: 100vh;
+            height: 100vh;
         }
         .sidebar {
             background-color: var(--dark-color);
@@ -136,21 +142,11 @@
             </div>
         </div>
 
-        <footer style="text-align:center; font-size: 14px;">&copy; 2025 Fitness Hub</footer>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Header -->
-        <header>
-            <div class="user-profile">
-                <div class="user-avatar"><%= fullName.charAt(0) %></div>
-                <div><strong><%= fullName %></strong></div>
-            </div>
-            <form action="LogoutServlet" method="post">
-                <button type="submit" class="logout-btn">Logout</button>
-            </form>
-        </header>
+
 
         <!-- Content -->
         <div class="content">
@@ -158,13 +154,10 @@
             <p>Select an option from the sidebar to manage your profile or view your purchase history.</p>
         </div>
 
-        <!-- Footer -->
-        <footer>
-            <p>Stay Strong. Stay Healthy. 💪</p>
-        </footer>
+       
     </div>
 
 </div>
-
+<%@ include file="footer.jsp" %>
 </body>
 </html>

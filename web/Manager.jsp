@@ -4,15 +4,16 @@
     Author     : Hong Jie
 --%>
 
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ include file="headerHome.jsp" %>
 <%
-    String name = (String) session.getAttribute("name");
+
     String phone = (String) session.getAttribute("phone");
     String email = (String) session.getAttribute("email");
-    String position = (String) session.getAttribute("position");
+    String position = (String) session.getAttribute("userType");
 
-    if (name == null || position == null) {
-        response.sendRedirect("login.jsp");
+    if (position == null) {
+        response.sendRedirect("staffLogin.jsp");
         return;
     }
 
@@ -163,84 +164,25 @@
       background-color: #16a085;
     }
 
-    .profile-pic {
-      max-width: 200px;
-      text-align: center;
-    }
 
-    .profile-pic img {
-      width: 100%;
-      border-radius: 50%;
-      border: 3px solid #1abc9c;
-    }
 
-    .profile-pic caption {
-      margin-top: 10px;
-      font-weight: bold;
-      color: #555;
-    }
-        .user-menu {
-        margin-left: auto;
-        position: relative;
-        cursor: pointer;
-      }
 
-      .login-icon {
-        height: 40px;
-        width: 85px;
-        border-radius: 50%;
-      }
 
-      .dropdown {
-        display: none;
-        position: absolute;
-        right: 0;
-        top: 80px;
-        background-color: white;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        z-index: 999;
-      }
-
-      .dropdown a {
-        display: block;
-        padding: 10px 15px;
-        text-decoration: none;
-        color: #333;
-        white-space: nowrap;
-      }
-
-      .dropdown a:hover {
-        background-color: #f1f1f1;
-      }
+     
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <img src="images/logo.png" alt="Fitness Logo">
-        <div class="header-text">
-            <strong>The Largest Fitness Specialist Chain Store</strong><br>
-            since 2025
-        </div>
-        <div class="user-menu" onclick="toggleDropdown()">
-            <img src="images/logout.png" alt="Login Icon" class="login-icon">
-            <div class="dropdown" id="userDropdown">
-                <a href="logout.jsp">Logout</a>
-            </div>
-        </div>
-    </div>
 
     <div class="container">
         <div class="sidebar">
             <h2><%= isManager ? "Manager" : "Staff" %> Panel</h2>
             <ul>
-                <li><a href="#">Customers</a></li>
-                <li><a href="#">Products</a></li>
+                <li><a href="customer.jsp">Customers</a></li>
+                <li><a href="product.jsp">Products</a></li>
                 <% if (isManager) { %>
-                    <li><a href="#">Staff</a></li>
-                    <li><a href="#">Reports</a></li>
+                    <li><a href="manageStaff.jsp">Staff</a></li>
+                    <li><a href="report.jsp">Reports</a></li>
                 <% } %>
                 
             </ul>
@@ -270,11 +212,7 @@
                     </form>
                 </div>
 
-                <!-- Profile Picture -->
-                <div class="profile-pic">
-                    <img src="images/profile.jpg" alt="Profile Picture">
-                    <caption><%= name %></caption>
-                </div>
+
 
             </div>
         </div>

@@ -22,6 +22,7 @@
             background-image: url('images/gym-bg.jpg');
             background-size: cover;
             background-position: center;
+            overflow: hidden;
         }
         .login-container {
             width: 400px;
@@ -250,7 +251,7 @@
                 </div>
             <% } %>
             
-            <form action="LoginServlet" method="post">
+            <form method="post" action="LoginServlet" onsubmit="return handleLogin(this);">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" placeholder="Enter your email" required>
@@ -274,8 +275,10 @@
                     </div>
                 </div>
                 
-                <button type="submit" class="login-btn">Member Login</button>
-            </form>
+                
+                     <button type="submit" class="login-btn">Member Login</button>
+                </form>
+
             
             <div class="login-options-separator">or</div>
             
@@ -306,6 +309,49 @@
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('email').focus();
         });
+        
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            fetch('LoginServlet', {
+                method: 'POST',
+                body: new URLSearchParams(new FormData(this))
+            })
+            .then(response => response.text())
+            .then(data => {
+                if(data === "LOGIN_SUCCESS") {
+                    // Close popup and redirect parent window
+                    window.parent.postMessage('LOGIN_SUCCESS', '*');
+                    window.parent.closePopup(); // Call parent's close function
+                } else {
+                    // Show error message
+                    alert("Login failed");
+                }
+            });
+        });
+        function handleLogin(form) {
+            const formData = new FormData(form);
+
+            fetch('LoginServlet', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include' // IMPORTANT to include cookies/sessions
+            })
+            .then(response => response.text())
+            .then(result => {
+                if (result === 'LOGIN_SUCCESS') {
+                    window.parent.postMessage('LOGIN_SUCCESS', '*');
+                } else {
+                    alert("Invalid login!");
+                }
+            })
+            .catch(error => {
+                alert("Login error");
+                console.error(error);
+            });
+
+            return false; // prevent default form submission
+        }
     </script>
 </body>
 </html>

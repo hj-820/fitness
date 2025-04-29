@@ -6,7 +6,7 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, da.StaffDA, domain.Staff" %>
-<jsp:include page="header.jsp"/>
+<jsp:include page="headerHome.jsp"/>
 
 <%
     // Fetch all staff via DAO

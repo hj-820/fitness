@@ -16,13 +16,14 @@
         <style>
     .footer {
         background-color: #2c3e50;
+        bottom:0;
         color: #ecf0f1;
         text-align: center;
         padding: 20px;
         font-size: 14px;
         width: 100%;
         box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        margin-top: 50px; /* space from content */
+        position :fixed;
     }
 </style>
     </head>

@@ -14,7 +14,7 @@
             font-family: 'Arial', sans-serif;
         }
         body {
-            background-color: transparent;
+            background: transparent;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,6 +22,7 @@
             background-image: url('images/gym-bg.jpg');
             background-size: cover;
             background-position: center;
+            overflow: hidden;
         }
         .login-container {
             width: 400px;
@@ -33,7 +34,7 @@
         }
         .login-header {
             background: linear-gradient(135deg, rgba(253,53,160,1) 0%, rgba(184,58,255,1) 100%);
-            padding: 25px;
+            padding: 8px;
             color: white;
             text-align: center;
             position: relative;
@@ -60,7 +61,6 @@
             margin-bottom: 5px;
             font-weight: 800;
             position: relative;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         .login-header p {
             font-size: 14px;
@@ -133,39 +133,6 @@
         .login-btn:active {
             transform: translateY(0);
         }
-        .staff-login-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(52,152,219,0.3);
-            margin-top: 15px;
-        }
-        .staff-login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(52,152,219,0.4);
-            background: linear-gradient(135deg, #2980b9 0%, #1a252f 100%);
-        }
-        .staff-login-btn:active {
-            transform: translateY(0);
-        }
-        .register-link {
-            text-align: center;
-            margin-top: 25px;
-            color: #7f8c8d;
-            font-size: 14px;
-        }
-        .register-link a {
-            color: rgba(253,53,160,1);
-            text-decoration: none;
-            font-weight: 600;
-        }
         .error-message {
             color: #e74c3c;
             background-color: #fadbd8;
@@ -195,31 +162,16 @@
             cursor: pointer;
             color: #7f8c8d;
         }
-        .motivation-quote {
+        .member-login-link {
             text-align: center;
-            margin-top: 20px;
-            font-style: italic;
-            color: #7f8c8d;
-            font-size: 13px;
-        }
-        .login-options-separator {
-            display: flex;
-            align-items: center;
-            margin: 20px 0;
+            margin-top: 25px;
             color: #7f8c8d;
             font-size: 14px;
         }
-        .login-options-separator::before,
-        .login-options-separator::after {
-            content: "";
-            flex: 1;
-            border-bottom: 1px solid #ddd;
-        }
-        .login-options-separator:not(:empty)::before {
-            margin-right: 10px;
-        }
-        .login-options-separator:not(:empty)::after {
-            margin-left: 10px;
+        .member-login-link a {
+            color: rgba(253,53,160,1);
+            text-decoration: none;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -244,7 +196,7 @@
                 </div>
             <% } %>
             
-            <form action="StaffLoginServlet" method="post">
+            <form method="post" action="LoginServlet" onsubmit="return handleStaffLogin(this);">
                 <div class="form-group">
                     <label for="email">Staff Email</label>
                     <input type="email" id="email" name="email" placeholder="Enter your staff email" required>
@@ -290,10 +242,12 @@
                 eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
             }
         }
-        
+
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('email').focus();
         });
+        
+
     </script>
 </body>
 </html>
