@@ -7,6 +7,7 @@
 <%@ page import="domain.Product" %>
 <%@ page import="da.ProductDA" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:include page="headerHome.jsp"/>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,54 +26,29 @@
       scroll-behavior: smooth;
     }
 
-    header {
-      background-color: #000;
-      color: white;
-      padding: 20px 40px;
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
       display: flex;
-      align-items: center;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    .logo {
-      font-size: 28px;
-      font-weight: bold;
-      color: #FD35A0;
-      display: flex;
-      align-items: center;
-    }
-
-    .logo img {
-      height: 45px;
-      margin-right: 10px;
-    }
-
-    nav {
-      background: linear-gradient(to right, #fd35a0, #ff6ec4);
-      padding: 12px 40px;
-      font-weight: bold;
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-size: 16px;
-      transition: all 0.3s ease;
-    }
-
-    nav a:hover {
-      color: #ffd6ec;
-      text-shadow: 0 0 8px rgba(255,255,255,0.6);
+      flex-direction: column;
     }
 
     .container {
+      flex: 1; /* Take up all space except footer */
       display: flex;
       padding: 40px;
       gap: 40px;
+    }
+
+    .footer {
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      width: 100%;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
     }
 
     .sidebar {
@@ -214,17 +190,6 @@
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <img src="images/logo.png" alt="Gym Store Logo" style="height: 40px;">
-  </div>
-</header>
-
-<nav>
-  <a href="#cardio">Cardio</a>
-  <a href="#strength">Strength</a>
-  <a href="#accessories">Accessories</a>
-</nav>
 
 <div class="container">
   <div class="sidebar">
@@ -284,5 +249,7 @@
   </div>
 </div>
 
+
 </body>
+<jsp:include page="footer.jsp"/>
 </html>

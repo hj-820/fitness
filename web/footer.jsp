@@ -20,11 +20,9 @@
         text-align: center;
         padding: 20px;
         font-size: 14px;
-        position: fixed;
-        bottom: 0;
         width: 100%;
         box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        z-index: 1000;
+        margin-top: 50px; /* space from content */
     }
 </style>
     </head>

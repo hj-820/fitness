@@ -3,7 +3,7 @@
     Created on : 22 Apr 2025, 15:15:07
     Author     : Hong Jie
 --%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 
 <%
     // Temporary simulation for Manager access

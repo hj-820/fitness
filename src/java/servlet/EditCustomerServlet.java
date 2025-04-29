@@ -40,10 +40,10 @@ public class EditCustomerServlet extends HttpServlet {
                 customer.setPhone(phone);
                 customer.setEmail(email);
 
-                customerDA.updateRecord(customer);
+                customerDA.updateCustomer(customer);
 
             } else if ("delete".equalsIgnoreCase(action)) {
-                customerDA.deleteRecord(id);
+                customerDA.deleteCustomer(id);
             }
 
             response.sendRedirect("customer.jsp");
@@ -56,7 +56,7 @@ public class EditCustomerServlet extends HttpServlet {
                 if (customerDA != null) {
                     customerDA.close();
                 }
-            } catch (SQLException e) {
+            }catch (SQLException e) {
                 e.printStackTrace();
             }
         }

@@ -4,22 +4,12 @@
     Author     : Hong Jie
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    session.setAttribute("position", "Manager");
-    String position = (String) session.getAttribute("position");
-    String updated = request.getParameter("updated");
-    if ("true".equals(updated)) {
-%>
-<script>alert("Profile updated successfully!");</script>
-<%
-    }
-%>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Fitness Shop</title>
+    <meta charset="UTF-8">
+    <title>Fitness Concept</title>
     <style>
         * {
             box-sizing: border-box;
@@ -30,97 +20,156 @@
 
         body {
             background-color: #f4f6f8;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            height: 100vh;
         }
 
-        .navbar {
+        /* Black Top Bar */
+        .top-bar {
             background-color: rgba(253,53,160,255);
+            color: white;
+            padding: 15px 30px;
             display: flex;
             align-items: center;
-            padding: 10px 20px;
-            color: white;
+            justify-content: space-between;
         }
 
-        .navbar img.logo {
-            height: 70px;
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-section img {
+            height: 80px;
             margin-right: 20px;
         }
 
-        .nav-links {
+        .logo-text {
+            border-left: 1px solid white;
+            padding-left: 20px;
+            font-size: 18px;
+        }
+
+        .logo-text strong {
+            display: block;
+            font-size: 20px;
+        }
+
+        .right-section {
             display: flex;
+            align-items: center;
             gap: 20px;
         }
 
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            padding: 8px 12px;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-
-        .nav-links a:hover {
-            background-color: #d832a2;
-        }
-
-        .search-login-cart {
+        .search-bar {
             display: flex;
             align-items: center;
-            margin-left: auto;
-            gap: 15px;
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
         }
 
-        .search-box {
-            position: relative;
-        }
-
-        .search-box input[type="text"] {
-            padding: 8px 12px;
+        .search-bar input {
             border: none;
-            border-radius: 20px;
-            width: 200px;
+            padding: 10px;
+            outline: none;
+            width: 250px;
+        }
+
+        .search-bar button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
         }
 
         .icon {
-            height: 40px;
-            width: 40px;
+            width: 28px;
+            height: 28px;
             cursor: pointer;
         }
 
-        .main-content {
-            flex: 1;
-            padding: 30px;
-            background-color: #ffffff;
-            overflow-y: auto;
+        .login-icon {
+            width: 45px; /* Bigger login icon */
+            height: 45px;
         }
 
+        /* Orange Navigation Menu */
+        .nav-bar {
+            background-color: #FFE3F1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .nav-bar a {
+            color: black;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .nav-bar a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
+
 <body>
-    <div class="navbar">
-        <img src="images/logo.png" alt="Fitness Logo" class="logo">
 
-        <div class="nav-links">
-            <a href="home1.jsp">Home</a>
-            <a href="home.jsp">Shop Products</a>
-            <a href="#">About Us</a>
-        </div>
-
-        <div class="search-login-cart">
-            <div class="search-box">
-                <input type="text" placeholder="Search...">
+    <div class="top-bar">
+        <div class="logo-section">
+            <img src="images/logo.png" alt="Fitness Logo">
+            <div class="logo-text">
+                <strong>The Largest</strong>
+                Fitness Specialist Chain Store<br>
+                since 2025
             </div>
-            <a href="login.jsp"><img src="images/login.png" alt="Login" class="icon"></a>
-            <a href="cart.jsp"><img src="images/cart.png" alt="Cart" class="icon"></a>
+        </div>
+
+        <div class="right-section">
+            <div class="search-bar">
+                <input type="text" placeholder="Search entire store here...">
+                <button><img src="https://static-00.iconduck.com/assets.00/search-icon-2048x2048-cmujl7en.png" alt="Search" class="icon"></button>
+            </div>
+            <img src="images/logout.png" alt="Login" class="login-icon">
+            <img src="images/cart.png" alt="Cart" class="icon">
         </div>
     </div>
 
-    <div class="main-content">
-        <!-- Your page content here -->
+    <div class="nav-bar">
+        <a href="home1.jsp">HOME</a>
+        <a href="home.jsp">SHOP PRODUCTS</a>
+        <a href="aboutUs.jsp">ABOUT US</a>
     </div>
+    
+    <div id="loginPopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+     width: 80%; height: 80%; background: transparent;  z-index: 1000;  overflow: hidden;">
+    <iframe src="fitnessLogin.jsp" style="width: 100%; height: 100%; border: none;"></iframe>
+    <button onclick="closePopup()" style="position: absolute; top: 10px; right: 300px; background: #ff6b6b; color: white; border: none; padding: 8px 12px; cursor: pointer; border-radius: 5px;">Close</button>
+</div>
+
+<!-- Background overlay -->
+<div id="overlay" style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index: 999;"></div>
 
 </body>
+<script>
+    const loginIcon = document.querySelector('.login-icon');
+    const popup = document.getElementById('loginPopup');
+    const overlay = document.getElementById('overlay');
+
+    loginIcon.addEventListener('click', function() {
+        popup.style.display = 'block';
+        overlay.style.display = 'block';
+    });
+
+    function closePopup() {
+        popup.style.display = 'none';
+        overlay.style.display = 'none';
+    }
+</script>
+
 </html>

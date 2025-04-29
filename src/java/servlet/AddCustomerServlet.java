@@ -33,7 +33,7 @@ public class AddCustomerServlet extends HttpServlet {
         // Initialize CustomerDA and add the new customer record
         try {
             CustomerDA customerDA = new CustomerDA();
-            customerDA.addRecord(customer);
+            customerDA.addCustomer(customer);
             customerDA.close();
             
             // Redirect to a success page or confirmation page
