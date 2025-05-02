@@ -39,35 +39,55 @@
             height: 100vh;
         }
         .sidebar {
-            background-color: var(--dark-color);
+            background-color: #222;
             color: white;
             padding: 20px 0;
+            width: 250px;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
+            position: sticky;
+            top: 0;
         }
+
         .sidebar-header {
             text-align: center;
             padding: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .sidebar-nav {
             margin-top: 30px;
         }
+
         .nav-item {
             padding: 15px 25px;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
+            color: white;
         }
+
         .nav-item:hover {
-            background-color: rgba(255,255,255,0.1);
+            background-color: rgba(255, 255, 255, 0.1);
         }
+
         .nav-item i {
             margin-right: 10px;
             width: 20px;
             text-align: center;
+        }
+
+        .nav-item a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid var(--primary-color);
         }
         .main-content {
             display: flex;
@@ -128,16 +148,16 @@
     <div class="sidebar">
         <div>
             <div class="sidebar-header">
-                <h2>FITNESS HUB</h2>
+                <h2>FITNESS CONCEPT</h2>
                 <p>Member Dashboard</p>
             </div>
 
             <div class="sidebar-nav">
                 <div class="nav-item">
-                    <i class="fas fa-user"></i> Profile Management
+                    <i class="fas fa-user"></i> <a><a href="profile.jsp">Profile Management</a>
                 </div>
                 <div class="nav-item">
-                    <i class="fas fa-shopping-cart"></i> Purchase History
+                    <i class="fas fa-shopping-cart"></i> <a><a href="purchaseHistory.jsp">Purchase History</a>
                 </div>
             </div>
         </div>

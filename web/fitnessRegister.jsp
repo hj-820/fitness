@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Fitness Hub - Member Registration</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
         * {
             box-sizing: border-box;
@@ -22,6 +22,7 @@
             background-image: url('images/gym-bg.jpg');
             background-size: cover;
             background-position: center;
+            overflow: hidden;
         }
         .login-container {
             width: 400px;
@@ -33,7 +34,7 @@
         }
         .login-header {
             background: linear-gradient(135deg, rgba(253,53,160,1) 0%, rgba(184,58,255,1) 100%);
-            padding: 15px;
+            padding: 25px;
             color: white;
             text-align: center;
             position: relative;
@@ -226,8 +227,7 @@
 <body>
     <div class="login-container">
         <div class="login-header">
-            <img src="images/logo.png" alt="Fitness Hub Logo">
-            <h2>JOIN FITNESS HUB</h2>
+            <h2>JOIN FITNESS CONCEPT</h2>
             <p>Start your fitness journey today</p>
         </div>
         
@@ -238,22 +238,42 @@
                 </div>
             <% } %>
             
-            <form action="RegisterServlet" method="post">
+            <form action="RegisterServlet" method="post" onsubmit="return validateForm()" id="registrationForm">
                 <div class="form-group">
                     <label for="fullName">Full Name</label>
                     <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
                 </div>
                 
                 <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="text" id="phone" name="phone" placeholder="Phone Number" required
+                           oninput="validatePhone(this)">
+                    <small id="phoneError" style="color: #e74c3c; display: none;"></small>
+                </div>
+                
+                <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required
+                           oninput="validateEmail(this)">
+                    <small id="emailError" style="color: #e74c3c; display: none;"></small>
                 </div>
                 
                 <div class="form-group password-container">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                    <input type="password" id="password" name="password" placeholder="Create a password" required
+                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                           title="Must contain at least 8 characters, including uppercase, lowercase and number">
                     <span class="toggle-password" onclick="togglePasswordVisibility()">
                         <i class="fas fa-eye" id="eye-icon"></i>
+                    </span>
+                </div>
+                
+                <div class="form-group password-container">
+                    <label for="confirmPassword">Re-enter Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" 
+                           placeholder="Re-enter your password" required>
+                    <span class="toggle-password" onclick="toggleConfirmPasswordVisibility()">
+                        <i class="fas fa-eye" id="eye-icon-confirm"></i>
                     </span>
                 </div>
                 
@@ -267,10 +287,11 @@
     </div>
 
     <script>
+        // Toggle password visibility functions
         function togglePasswordVisibility() {
             const passwordField = document.getElementById('password');
             const eyeIcon = document.getElementById('eye-icon');
-            
+
             if (passwordField.type === 'password') {
                 passwordField.type = 'text';
                 eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
@@ -278,6 +299,96 @@
                 passwordField.type = 'password';
                 eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
             }
+        }
+
+        function toggleConfirmPasswordVisibility() {
+            const confirmField = document.getElementById('confirmPassword');
+            const eyeIcon = document.getElementById('eye-icon-confirm');
+
+            if (confirmField.type === 'password') {
+                confirmField.type = 'text';
+                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                confirmField.type = 'password';
+                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        // Phone number validation
+        function validatePhone(input) {
+            const phoneRegex = /^[0-9]{10,15}$/;
+            const phoneError = document.getElementById('phoneError');
+            
+            if (!phoneRegex.test(input.value)) {
+                phoneError.textContent = "Please enter a valid phone number (10-15 digits)";
+                phoneError.style.display = 'block';
+                input.style.borderColor = '#e74c3c';
+                return false;
+            } else {
+                phoneError.style.display = 'none';
+                input.style.borderColor = '#ddd';
+                return true;
+            }
+        }
+
+        // Email validation
+        function validateEmail(input) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const emailError = document.getElementById('emailError');
+            
+            if (!emailRegex.test(input.value)) {
+                emailError.textContent = "Please enter a valid email address";
+                emailError.style.display = 'block';
+                input.style.borderColor = '#e74c3c';
+                return false;
+            } else {
+                emailError.style.display = 'none';
+                input.style.borderColor = '#ddd';
+                return true;
+            }
+        }
+
+        // Password match validation
+        function validatePasswords() {
+            const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirmPassword').value;
+
+            if (password !== confirm) {
+                alert("Passwords do not match!");
+                return false;
+            }
+            return true;
+        }
+
+        // Form validation and confirmation
+        function validateForm() {
+            // Validate all fields
+            const isPhoneValid = validatePhone(document.getElementById('phone'));
+            const isEmailValid = validateEmail(document.getElementById('email'));
+            const isPasswordValid = validatePasswords();
+            
+            if (!isPhoneValid || !isEmailValid || !isPasswordValid) {
+                return false;
+            }
+            
+            // Show confirmation dialog
+            return confirmRegistration();
+        }
+
+        // Registration confirmation
+        function confirmRegistration() {
+            const fullName = document.getElementById('fullName').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            
+            const confirmationMessage = 
+                `Please confirm your details:\n\n` +
+                `Full Name: ${fullName}\n` +
+                `Phone: ${phone}\n` +
+                `Email: ${email}\n\n` +
+                `Are you sure you want to submit?`;
+            
+            return confirm(confirmationMessage);
         }
     </script>
 </body>

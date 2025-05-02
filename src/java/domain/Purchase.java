@@ -9,49 +9,88 @@ package domain;
  * @author Hong Jie
  */
 
-import java.util.Date;
 
 public class Purchase {
     private int purchaseId;
-    private String productName;
     private double amount;
-    private Date purchaseDate;
+    private String purchaseDate;
+    private int customerId;
+    private int productId;
+    private int quantity;
+    private String customerName;
+    private String customerPhone;
+    private String customerAddress;
 
-    public Purchase() {}
-
-    public Purchase(int purchaseId, String productName, double amount, Date purchaseDate) {
-        this.purchaseId = purchaseId;
-        this.productName = productName;
-        this.amount = amount;
-        this.purchaseDate = purchaseDate;
-    }
-
-    // Getter and Setter
+    // Getters and Setters
     public int getPurchaseId() {
         return purchaseId;
     }
+
     public void setPurchaseId(int purchaseId) {
         this.purchaseId = purchaseId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-    public void setProductName(String productName) {
-        this.productName = productName;
     }
 
     public double getAmount() {
         return amount;
     }
+
     public void setAmount(double amount) {
         this.amount = amount;
     }
 
-    public Date getPurchaseDate() {
+    public String getPurchaseDate() {
         return purchaseDate;
     }
-    public void setPurchaseDate(Date purchaseDate) {
+
+    public void setPurchaseDate(String purchaseDate) {
         this.purchaseDate = purchaseDate;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
+    }
+
+    public String getCustomerAddress() {
+        return customerAddress;
+    }
+
+    public void setCustomerAddress(String customerAddress) {
+        this.customerAddress = customerAddress;
     }
 }

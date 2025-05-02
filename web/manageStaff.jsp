@@ -20,6 +20,12 @@
     }
 %>
 
+
+<%
+    String role = (String) session.getAttribute("userType"); // Replace with session.getAttribute("role") later if dynamic role
+    boolean isManager = role.equalsIgnoreCase("Manager");
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,6 +52,45 @@
         .modal-content input[type="submit"]:hover { background:#2980b9; }
         .close { float:right; font-size:24px; font-weight:bold; cursor:pointer; color:#aaa; }
         .close:hover { color:#000; }
+         .container {
+                display: flex;
+                flex: 1;
+            }
+
+            .sidebar {
+                width: 220px;
+                background-color: #2c3e50;
+                padding: 20px;
+                color: #fff;
+            }
+
+            .sidebar h1 {
+                margin-bottom: 30px;
+                font-size: 24px;
+                text-align: center;
+            }
+
+            .sidebar ul {
+                list-style: none;
+            }
+
+            .sidebar ul li {
+                margin: 20px 0;
+            }
+
+            .sidebar ul li a {
+                color: #ecf0f1;
+                text-decoration: none;
+                font-size: 18px;
+                display: block;
+                padding: 10px;
+                border-radius: 5px;
+                transition: background 0.3s;
+            }
+
+            .sidebar ul li a:hover {
+                background-color: #34495e;
+            }
     </style>
     <script>
         function openModal() {
@@ -61,6 +106,19 @@
     </script>
 </head>
 <body>
+    
+            <div class="container">
+            <div class="sidebar">
+                <h1 style="color:white;"><a href="Manager.jsp" style="color:white; text-decoration:none;"><%= isManager ? "Manager" : "Staff" %> Panel</a></h1>
+                <ul>
+                    <li><a href="customer.jsp">Customers</a></li>
+                    <li><a href="product.jsp">Products</a></li>
+                    <% if (isManager) { %>
+                    <li><a href="manageStaff.jsp">Staff</a></li>
+                    <li><a href="report.jsp">Reports</a></li>
+                <% } %>
+                </ul>
+            </div>
 
 <div class="main-content">
     <h1>Manage Staff</h1>

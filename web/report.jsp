@@ -5,7 +5,7 @@
 --%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<jsp:include page="header.jsp"/>
+<jsp:include page="headerHome.jsp"/>
 <%@ page import="java.util.*, java.sql.*, java.text.*" %>
 
 <%-- Define a simple JavaBean-style class inside the JSP --%>
@@ -30,7 +30,7 @@
 %>
 
 <%
-    String role = "Manager";
+    String role = (String) session.getAttribute("userType");
     boolean isManager = "Manager".equalsIgnoreCase(role);
 
     String JDBC_URL = "jdbc:derby://localhost:1527/Fitness";
@@ -89,19 +89,46 @@
         .header { background-color: rgba(253,53,160,255); padding: 15px 30px; color: white; display: flex; align-items: center; }
         .header img { height: 100px; margin-right: 20px; }
         .header-text { font-size: 18px; }
-        .user-menu { margin-left: auto; position: relative; cursor: pointer; }
-        .login-icon { height: 40px; width: 85px; border-radius: 50%; }
-        .dropdown { display: none; position: absolute; right: 0; top: 80px; background-color: white; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 999; }
-        .dropdown a { display: block; padding: 10px 15px; text-decoration: none; color: #333; }
-        .dropdown a:hover { background-color: #f1f1f1; }
-        .container { display: flex; }
-        .sidebar { width: 220px; background-color: #2c3e50; padding: 20px; color: #fff; height: 100vh; }
-        .sidebar h2 { margin-bottom: 30px; font-size: 24px; text-align: center; }
-        .sidebar ul { list-style: none; padding: 0; }
-        .sidebar ul li { margin: 20px 0; }
-        .sidebar ul li a { color: #ecf0f1; text-decoration: none; font-size: 18px; display: block; padding: 10px; border-radius: 5px; transition: background 0.3s; }
-        .sidebar ul li a:hover { background-color: #34495e; }
-        .main-content { flex: 1; padding: 30px; }
+         .container {
+                display: flex;
+                flex: 1;
+            }
+
+            .sidebar {
+                width: 220px;
+                background-color: #2c3e50;
+                padding: 20px;
+                color: #fff;
+            }
+
+            .sidebar h1 {
+                margin-bottom: 30px;
+                font-size: 24px;
+                text-align: center;
+            }
+
+            .sidebar ul {
+                list-style: none;
+            }
+
+            .sidebar ul li {
+                margin: 20px 0;
+            }
+
+            .sidebar ul li a {
+                color: #ecf0f1;
+                text-decoration: none;
+                font-size: 18px;
+                display: block;
+                padding: 10px;
+                border-radius: 5px;
+                transition: background 0.3s;
+            }
+
+            .sidebar ul li a:hover {
+                background-color: #34495e;
+            }
+        .main-content { flex: 1; padding: 30px; padding-bottom: 100px;}
         .section { background-color: white; padding: 25px; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         h1, h2 { color: #2c3e50; }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
@@ -112,6 +139,19 @@
     </style>
 </head>
 <body>
+    
+                    <div class="container">
+            <div class="sidebar">
+                <h1 style="color:white;"><a href="Manager.jsp" style="color:white; text-decoration:none;"><%= isManager ? "Manager" : "Staff" %> Panel</a></h1>
+                <ul>
+                    <li><a href="customer.jsp">Customers</a></li>
+                    <li><a href="product.jsp">Products</a></li>
+                    <% if (isManager) { %>
+                    <li><a href="manageStaff.jsp">Staff</a></li>
+                    <li><a href="report.jsp">Reports</a></li>
+                <% } %>
+                </ul>
+            </div>
 
     <div class="main-content">
         <% if (!isManager) { %>

@@ -38,7 +38,7 @@ public class AddCustomerServlet extends HttpServlet {
             
             // Redirect to a success page or confirmation page
             response.sendRedirect("customer.jsp");  // Redirect to a page that shows all customers
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (Exception e) {
             // Handle any SQL or ClassNotFound exceptions
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error while adding customer.");

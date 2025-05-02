@@ -81,25 +81,43 @@ public class CustomerDA {
         }
         return null;
     }
+    
+    
+    public String getNameById(int id) throws SQLException {
+        String sql = "SELECT NAME FROM " + TABLE + " WHERE ID = ?";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, id);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("NAME");
+                }
+            }
+        }
+        return "Unknown Customer"; // More user-friendly than null
+    }
+
 
     /**
      * Add a new customer with password
      */
     public void addCustomer(Customer customer) throws SQLException {
         String sql = "INSERT INTO " + TABLE + " (NAME, EMAIL, PHONE, PASSWORD) VALUES (?, ?, ?, ?)";
-        
+
         try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, customer.getName());
             stmt.setString(2, customer.getEmail());
             stmt.setString(3, customer.getPhone());
-            stmt.setString(4, customer.getPassword());
-            
+            stmt.setString(4, customer.getPassword()); // Storing plain text password
+
             int affectedRows = stmt.executeUpdate();
-            
+
             if (affectedRows == 0) {
                 throw new SQLException("Creating customer failed, no rows affected.");
             }
-            
+
             try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     customer.setCustomerId(generatedKeys.getInt(1));
@@ -107,6 +125,19 @@ public class CustomerDA {
                     throw new SQLException("Creating customer failed, no ID obtained.");
                 }
             }
+        }
+    }
+    
+    public int getCustomerIdByEmail(String email) {
+        try {
+            String query = "SELECT customer_id FROM customer WHERE email = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, email.trim().toLowerCase()); // normalize email
+            ResultSet rs = stmt.executeQuery();
+            return rs.next() ? rs.getInt("id") : -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
         }
     }
 
@@ -125,6 +156,22 @@ public class CustomerDA {
             stmt.executeUpdate();
         }
     }
+    
+    
+    
+    public void updateCustomerPass(String name, String phone, String email, String password) throws SQLException {
+    String sql = "UPDATE customer SET phone = ?, email = ?, password = ? WHERE name = ?";
+    
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        
+        stmt.setString(1, phone);
+        stmt.setString(2, email);
+        stmt.setString(3, password);
+        stmt.setString(4, name);
+        
+        stmt.executeUpdate();
+    }
+}
 
     /**
      * Update customer password
@@ -172,6 +219,53 @@ public class CustomerDA {
         
         return customer;
     }
+    
+    public Customer authenticate(String email, String password) throws Exception {
+    // SQL to find customer by email
+        String sql = "SELECT * FROM customers WHERE email = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                // Verify password (assuming passwords are stored hashed)
+                String storedHash = rs.getString("password");
+                if (verifyPassword(password, storedHash)) {
+                    Customer customer = new Customer();
+                    customer.setCustomerId(rs.getInt("id"));
+                    customer.setName(rs.getString("name"));
+                    customer.setEmail(rs.getString("email"));
+                    customer.setPhone(rs.getString("phone"));
+                    customer.setPassword(storedHash); // Generally shouldn't set this
+                    return customer;
+                }
+            }
+            return null;
+        }
+    }
+
+    private boolean verifyPassword(String inputPassword, String storedHash) {
+        // Implement password verification (e.g., using BCrypt)
+        // Example: return BCrypt.checkpw(inputPassword, storedHash);
+        // For now, do plain text comparison (INSECURE - only for debugging)
+        return inputPassword.equals(storedHash);
+    }
+    
+    public Customer getCustomerByName(String name) throws SQLException {
+        String sql = "SELECT * FROM customer WHERE name = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, name);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToCustomer(rs);
+                }
+            }
+        }
+        return null;
+    }
 
     /**
      * Clean up resources
@@ -184,4 +278,6 @@ public class CustomerDA {
             ex.printStackTrace();
         }
     }
+    
+    
 }

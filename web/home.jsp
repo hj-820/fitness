@@ -9,6 +9,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="headerHome.jsp"/>
 
+<%
+  String userType = (String) session.getAttribute("userType");
+  String email = (String) session.getAttribute("email");
+  boolean canAddToCart = email != null && (userType == null || (!userType.equals("manager") && !userType.equals("staff")));
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -197,7 +203,8 @@
     <ul>
       <li><a href="#cardio">Cardio</a></li>
       <li><a href="#strength">Strength</a></li>
-      <li><a href="#accessories">Accessories</a></li>
+      <li><a href="#treadmill">Treadmill</a></li>
+      <li><a href="#accessory">Accessories</a></li>
     </ul>
   </div>
 
@@ -224,14 +231,23 @@
         
     %>
         <!-- Product Card with clickable product name -->
-        <form action="productDetail.jsp" method="get">
+        <form action="<%= canAddToCart ? "CartServlet" : "#" %>" method="post" onsubmit="<%= canAddToCart ? "return true;" : "alert('Please log in as a customer to add to cart.'); return false;" %>">
             <input type="hidden" name="productId" value="<%= product.getProductId() %>">
+            <input type="hidden" name="productName" value="<%= product.getProductName() %>">
+            <input type="hidden" name="price" value="<%= product.getPrice() %>">
+            <input type="hidden" name="image" value="<%= product.getImgUrl() %>">
+            <input type="hidden" name="quantity" value="1">
+
             <div class="product-card">
               <img src="<%= product.getImgUrl() %>" alt="<%= product.getProductName() %>" class="product-image">
               <div class="product-details">
                 <a href="productDetail.jsp?productId=<%= product.getProductId() %>" class="product-name"><%= product.getProductName() %></a>
                 <div class="price">MYR <%= product.getPrice() %></div>
-                <button type="submit" class="cart-btn">Add to Cart</button>
+                <button type="submit"
+                        class="cart-btn"
+                        <%= canAddToCart ? "" : "onclick='alert(\"Please log in as a customer to add to cart.\"); return false;' title='Login required to add to cart'" %>>
+                  Add to Cart
+                </button>
               </div>
             </div>
           </form>
@@ -251,5 +267,5 @@
 
 
 </body>
-<jsp:include page="footer.jsp"/>
+
 </html>

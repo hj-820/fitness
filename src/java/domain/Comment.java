@@ -1,24 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package domain;
-
-/**
- *
- * @author Hong Jie
- */
 
 import java.sql.Timestamp;
 
 public class Comment {
     private int commentId;
+    private int productId;
+    private int customerId;
     private String commentText;
+    private Timestamp timestampr; // Changed from timestamp
     private String replyText;
-    private Timestamp timestamp;
-    private String customerName;
-    private String customerEmail;
-    private int rating; // <<< New variable added here
+    private int rating;
 
     // Getters and Setters
     public int getCommentId() {
@@ -29,6 +20,22 @@ public class Comment {
         this.commentId = commentId;
     }
 
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
     public String getCommentText() {
         return commentText;
     }
@@ -37,36 +44,20 @@ public class Comment {
         this.commentText = commentText;
     }
 
+    public Timestamp getTimestampr() {
+        return timestampr;
+    }
+
+    public void setTimestampr(Timestamp timestampr) {
+        this.timestampr = timestampr;
+    }
+
     public String getReplyText() {
         return replyText;
     }
 
     public void setReplyText(String replyText) {
         this.replyText = replyText;
-    }
-
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getCustomerEmail() {
-        return customerEmail;
-    }
-
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
     }
 
     public int getRating() {

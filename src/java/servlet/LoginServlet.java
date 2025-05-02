@@ -20,7 +20,8 @@ public class LoginServlet extends HttpServlet {
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
-    String email = request.getParameter("email");
+    
+    String email = request.getParameter("email").trim().toLowerCase();
     String password = request.getParameter("password");
 
     response.setContentType("text/plain"); // Always respond with plain text
@@ -36,11 +37,12 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             session.setAttribute("id", customer.getCustomerId());
             session.setAttribute("fullName", customer.getName());
             session.setAttribute("email", customer.getEmail());
+            session.setAttribute("phone", customer.getPhone());
             session.setAttribute("userType", "customer");
 
-            response.setContentType("text/html");
-            response.getWriter().write("<script>window.parent.postMessage('LOGIN_SUCCESS', '*');</script>");
-
+            response.setContentType("text/plain");
+            response.getWriter().write("LOGIN_SUCCESS");
+            
         } else {
             // Try logging in as staff
             boolean staffLoginSuccess = false;

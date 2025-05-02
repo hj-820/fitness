@@ -176,7 +176,7 @@
 
     <div class="container">
         <div class="sidebar">
-            <h2><%= isManager ? "Manager" : "Staff" %> Panel</h2>
+            <h2 style="color:white;"><a href="Manager.jsp" style="color:white; text-decoration:none;"><%= isManager ? "Manager" : "Staff" %> Panel</a></h2>
             <ul>
                 <li><a href="customer.jsp">Customers</a></li>
                 <li><a href="product.jsp">Products</a></li>

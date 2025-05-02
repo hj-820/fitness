@@ -56,7 +56,7 @@ public class EditCustomerServlet extends HttpServlet {
                 if (customerDA != null) {
                     customerDA.close();
                 }
-            }catch (SQLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

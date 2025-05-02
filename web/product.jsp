@@ -10,7 +10,7 @@
 <%@ page import="da.ProductDA" %>
 <%
     // Simulate user role (replace with session in real app)
-    String role = "Staff"; // or "Manager"
+    String role = (String) session.getAttribute("userType");
     boolean isManager = role.equalsIgnoreCase("Manager");
 %>
 <!DOCTYPE html>
@@ -51,83 +51,51 @@
             font-size: 18px;
         }
 
-        .user-menu {
-            margin-left: auto;
-            position: relative;
-            cursor: pointer;
-        }
 
-        .login-icon {
-            height: 40px;
-            width: 85px;
-            border-radius: 50%;
-        }
 
-        .dropdown {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 80px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 999;
-        }
+                 .container {
+                display: flex;
+                flex: 1;
+            }
 
-        .dropdown a {
-            display: block;
-            padding: 10px 15px;
-            text-decoration: none;
-            color: #333;
-        }
+            .sidebar {
+                width: 220px;
+                background-color: #2c3e50;
+                padding: 20px;
+                color: #fff;
+            }
 
-        .dropdown a:hover {
-            background-color: #f1f1f1;
-        }
+            .sidebar h1 {
+                margin-bottom: 30px;
+                font-size: 24px;
+                text-align: center;
+            }
 
-        .container {
-            display: flex;
-            flex: 1;
-        }
+            .sidebar ul {
+                list-style: none;
+            }
 
-        .sidebar {
-            width: 220px;
-            background-color: #2c3e50;
-            padding: 20px;
-            color: #fff;
-        }
+            .sidebar ul li {
+                margin: 20px 0;
+            }
 
-        .sidebar h2 {
-            margin-bottom: 30px;
-            font-size: 24px;
-            text-align: center;
-        }
+            .sidebar ul li a {
+                color: #ecf0f1;
+                text-decoration: none;
+                font-size: 18px;
+                display: block;
+                padding: 10px;
+                border-radius: 5px;
+                transition: background 0.3s;
+            }
 
-        .sidebar ul {
-            list-style: none;
-        }
-
-        .sidebar ul li {
-            margin: 20px 0;
-        }
-
-        .sidebar ul li a {
-            color: #ecf0f1;
-            text-decoration: none;
-            font-size: 18px;
-            display: block;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-
-        .sidebar ul li a:hover {
-            background-color: #34495e;
-        }
+            .sidebar ul li a:hover {
+                background-color: #34495e;
+            }
 
         .main-content {
             padding: 30px;
+            padding-bottom:70px;
             flex: 1;
             background-color: #fff;
             margin: 20px;
@@ -244,9 +212,22 @@
     </style>
 </head>
 <body>
-<jsp:include page="header.jsp" />
+<jsp:include page="headerHome.jsp" />
 
-<div class="main-content">
+
+                <div class="container">
+            <div class="sidebar">
+                <h1 style="color:white;"><a href="Manager.jsp" style="color:white; text-decoration:none;"><%= isManager ? "Manager" : "Staff" %> Panel</a></h1>
+                <ul>
+                    <li><a href="customer.jsp">Customers</a></li>
+                    <li><a href="product.jsp">Products</a></li>
+                    <% if (isManager) { %>
+                    <li><a href="manageStaff.jsp">Staff</a></li>
+                    <li><a href="report.jsp">Reports</a></li>
+                <% } %>
+                </ul>
+            </div>
+<div class="main-content"style="padding-bottom:70px;">
     <h1>Product Records</h1>
     <table>
         <tr>

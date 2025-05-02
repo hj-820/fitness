@@ -47,6 +47,28 @@ public class ProductDA {
         rs.close();
         return products;
     }
+    
+    public List<Product> searchProductsByName(String name) throws SQLException {
+        List<Product> products = new ArrayList<>();
+        String sql = "SELECT * FROM " + TABLE + " WHERE LOWER(NAME) LIKE LOWER(?)";
+        stmt = conn.prepareStatement(sql);
+        stmt.setString(1, "%" + name + "%"); // Using % for partial matches
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            Product p = new Product(
+                rs.getInt("ID"),
+                rs.getString("NAME"),
+                rs.getDouble("PRICE"),
+                rs.getString("CATEGORY"),
+                rs.getString("DESCRIPTION"),
+                rs.getString("IMG_URL")
+            );
+            products.add(p);
+        }
+        rs.close();
+        return products;
+    }
 
     public void addRecord(Product p) throws SQLException {
         String sql = "INSERT INTO " + TABLE + " (NAME, PRICE, CATEGORY, DESCRIPTION, IMG_URL) VALUES (?, ?, ?, ?, ?)";
@@ -59,25 +81,25 @@ public class ProductDA {
         stmt.executeUpdate();
     }
 
-    public Product getRecord(int id) throws SQLException {
-        String sql = "SELECT * FROM " + TABLE + " WHERE ID = ?";
-        stmt = conn.prepareStatement(sql);
+public Product getRecord(int id) throws SQLException {
+    String sql = "SELECT * FROM " + TABLE + " WHERE ID = ?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
         stmt.setInt(1, id);
-        ResultSet rs = stmt.executeQuery();
-        Product p = null;
-        if (rs.next()) {
-            p = new Product(
-                rs.getInt   ("ID"),
-                rs.getString("NAME"),
-                rs.getDouble("PRICE"),
-                rs.getString("CATEGORY"),
-                rs.getString("DESCRIPTION"),
-                rs.getString("IMG_URL")
-            );
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return new Product(
+                    rs.getInt("ID"),
+                    rs.getString("NAME"),
+                    rs.getDouble("PRICE"),
+                    rs.getString("CATEGORY"),
+                    rs.getString("DESCRIPTION"),
+                    rs.getString("IMG_URL")
+                );
+            }
         }
-        rs.close();
-        return p;
     }
+    return null;
+}
 
     public void updateRecord(Product p) throws SQLException {
         String sql = "UPDATE " + TABLE + " SET NAME = ?, PRICE = ?, CATEGORY = ?, DESCRIPTION = ?, IMG_URL = ? WHERE ID = ?";

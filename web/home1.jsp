@@ -50,6 +50,7 @@
 
     .trending-section {
       padding:50px 20px;
+      padding-bottom:80px;
       flex:1;
     }
     .trending-section h2 { text-align:center; margin-bottom:40px; }

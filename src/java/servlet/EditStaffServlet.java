@@ -49,7 +49,7 @@ public class EditStaffServlet extends HttpServlet {
             }
 
             staffDA.close();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             response.getWriter().println("Error: " + e.getMessage());
         }

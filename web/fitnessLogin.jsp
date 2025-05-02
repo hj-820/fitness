@@ -1,6 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
+    <% if (request.getParameter("success") != null) { %>
+    <script>
+        alert("<%= request.getParameter("success") %>");
+    </script>
+<% } %>
+
+<% if (request.getParameter("error") != null) { %>
+    <script>
+        alert("<%= request.getParameter("error") %>");
+    </script>
+<% } %>
 <head>
     <meta charset="UTF-8">
     <title>Fitness Hub - Member Login</title>
@@ -228,7 +239,7 @@
     <div class="login-container">
         <div class="login-header">
             <img src="images/logo.png" alt="Fitness Hub Logo">
-            <h2>FITNESS HUB</h2>
+            <h2>FITNESS CONCEPT</h2>
             <p>Your fitness journey starts here</p>
         </div>
         
@@ -271,7 +282,7 @@
                         <label for="remember">Remember me</label>
                     </div>
                     <div class="forgot-password">
-                        <a href="fitnessForgotPassword.jsp">Forgot password?</a>
+                        <a href="forgotpassword.jsp">Forgot password?</a>
                     </div>
                 </div>
                 
@@ -293,64 +304,44 @@
     </div>
 
     <script>
-        function togglePasswordVisibility() {
-            const passwordField = document.getElementById('password');
-            const eyeIcon = document.getElementById('eye-icon');
-            
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
-            }
-        }
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('email').focus();
-        });
-        
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            fetch('LoginServlet', {
-                method: 'POST',
-                body: new URLSearchParams(new FormData(this))
-            })
-            .then(response => response.text())
-            .then(data => {
-                if(data === "LOGIN_SUCCESS") {
-                    // Close popup and redirect parent window
-                    window.parent.postMessage('LOGIN_SUCCESS', '*');
-                    window.parent.closePopup(); // Call parent's close function
-                } else {
-                    // Show error message
-                    alert("Login failed");
-                }
-            });
-        });
         function handleLogin(form) {
-            const formData = new FormData(form);
+            console.log("Login form submitted");
 
             fetch('LoginServlet', {
                 method: 'POST',
-                body: formData,
-                credentials: 'include' // IMPORTANT to include cookies/sessions
+                body: new URLSearchParams(new FormData(form)),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
             })
-            .then(response => response.text())
-            .then(result => {
-                if (result === 'LOGIN_SUCCESS') {
-                    window.parent.postMessage('LOGIN_SUCCESS', '*');
+            .then(response => {
+                console.log("Response status:", response.status);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(text => {
+                console.log("Server response:", text);
+                if (text === "LOGIN_SUCCESS") {
+                    // For popup login
+                    if (window !== window.parent) {
+                        window.parent.postMessage('LOGIN_SUCCESS', '*');
+                        window.parent.closePopup();
+                    } else {
+                        // For regular page login
+                        window.location.href = "MainDashboard.jsp";
+                    }
                 } else {
-                    alert("Invalid login!");
+                    alert("Login failed. Please check your email and password.");
                 }
             })
             .catch(error => {
-                alert("Login error");
-                console.error(error);
+                console.error("Error:", error);
+                alert("Login error occurred. Please try again.");
             });
 
-            return false; // prevent default form submission
+            return false; // Prevent default form submission
         }
     </script>
 </body>

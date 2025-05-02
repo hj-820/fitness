@@ -70,7 +70,7 @@ public class AddStaffServlet extends HttpServlet {
 
             response.sendRedirect("manageStaff.jsp");
 
-        } catch (SQLException | ClassNotFoundException | NumberFormatException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             response.getWriter().println("<h3>Error: " + e.getMessage() + "</h3>");
         }

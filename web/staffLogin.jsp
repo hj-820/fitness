@@ -179,7 +179,7 @@
     <div class="login-container">
         <div class="login-header">
             <img src="images/logo.png" alt="Fitness Hub Logo">
-            <h2>FITNESS HUB</h2>
+            <h2>FITNESS CONCEPT</h2>
             <p>Staff Portal</p>
         </div>
         
@@ -214,9 +214,6 @@
                     <div class="remember-me">
                         <input type="checkbox" id="remember" name="remember">
                         <label for="remember">Remember me</label>
-                    </div>
-                    <div class="forgot-password">
-                        <a href="staffForgotPassword.jsp">Forgot password?</a>
                     </div>
                 </div>
                 

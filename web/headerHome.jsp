@@ -3,7 +3,7 @@
     Created on : 28 Apr 2025, 01:07:42
     Author     : Hong Jie
 --%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 
 <%
     String role = (String) session.getAttribute("userType"); // staff / manager
@@ -269,8 +269,10 @@
 
             <div class="right-section">
                 <div class="search-bar">
-                    <input type="text" placeholder="Search entire store here...">
-                    <button><img src="https://static-00.iconduck.com/assets.00/search-icon-2048x2048-cmujl7en.png" alt="Search" class="icon"></button>
+                   <form action="SearchServlet" method="post" class="search-bar">
+                        <input type="text" name="searchQuery" placeholder="Search entire store here..." required>
+                        <button type="submit"><img src="https://static-00.iconduck.com/assets.00/search-icon-2048x2048-cmujl7en.png" alt="Search" class="icon"></button>
+                    </form>
                 </div>
 
                 <div class="dropdown">
@@ -289,7 +291,9 @@
                     </div>
                 </div>
 
-                <img src="images/cart.png" alt="Cart" class="icon">
+                <a href="cart.jsp">
+                    <img src="images/cart.png" alt="Cart" class="icon">
+                </a>
             </div>
         </div> <!-- End of top-bar -->
 
@@ -338,9 +342,9 @@
 
     window.addEventListener('message', function(e) {
         if (e.data === 'STAFF_LOGIN_SUCCESS') {
-            closePopup(); // ✅ first close
+            closePopup(); // ? first close
             setTimeout(function() {
-                window.location.href = 'Manager.jsp'; // ✅ then redirect
+                window.location.href = 'Manager.jsp'; // ? then redirect
             }, 300); // delay to allow popup close to be visible
         } else if (e.data === 'LOGIN_SUCCESS') {
             closePopup();
